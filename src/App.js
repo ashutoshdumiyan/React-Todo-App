@@ -1,26 +1,94 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Todos from "./components/Todos";
+import Header from "./components/Header";
+import AddTodo from "./components/AddTodo";
+import About from "./components/About";
+import "./App.css";
+// import uuid from "uuid";
+import Axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    todos: []
+  };
+
+  componentDidMount() {
+    Axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10").then(
+      res => {
+        try {
+          let elem = document.querySelector(".spinner-border");
+          elem.classList.remove("spinner-border");
+        } catch (error) {
+          console.log(error);
+        }
+        this.setState({ todos: res.data });
+      }
+    );
+  }
+
+  // Toggle complete
+  toggleComplete = id => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+      })
+    });
+  };
+
+  // Add Item
+  addItem = title => {
+    Axios.post("https://jsonplaceholder.typicode.com/todos", {
+      title,
+      completed: false
+    }).then(res => {
+      this.setState({
+        todos: [...this.state.todos, res.data]
+      });
+    });
+  };
+
+  // Delete Item
+  deleteItem = id => {
+    Axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`).then(
+      res => {
+        this.setState({
+          todos: [...this.state.todos.filter(todo => todo.id !== id)]
+        });
+      }
+    );
+  };
+
+  render() {
+    return (
+      <Router>
+        <div className="container">
+          <Header />
+          <br />
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <React.Fragment>
+                <AddTodo addItem={this.addItem} />
+                <br />
+                <div className="spinner-border"></div>
+                <Todos
+                  todos={this.state.todos}
+                  toggleComplete={this.toggleComplete}
+                  deleteItem={this.deleteItem}
+                />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/about" component={About} />
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;

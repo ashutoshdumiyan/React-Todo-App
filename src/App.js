@@ -14,11 +14,12 @@ class App extends Component {
   };
 
   componentDidMount() {
+    // if (this.state.todos)
     Axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10").then(
       res => {
         try {
           let elem = document.querySelector(".spinner-border");
-          elem.classList.remove("spinner-border");
+          elem.style.display = "none";
         } catch (error) {
           console.log(error);
         }

@@ -14,7 +14,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // if (this.state.todos)
     Axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10").then(
       res => {
         try {
@@ -64,31 +63,58 @@ class App extends Component {
   };
 
   render() {
-    return (
-      <Router>
-        <div className="container">
-          <Header />
-          <br />
-          <Route
-            exact
-            path="/"
-            render={props => (
-              <React.Fragment>
-                <AddTodo addItem={this.addItem} />
-                <br />
-                <div className="spinner-border"></div>
-                <Todos
-                  todos={this.state.todos}
-                  toggleComplete={this.toggleComplete}
-                  deleteItem={this.deleteItem}
-                />
-              </React.Fragment>
-            )}
-          />
-          <Route path="/about" component={About} />
-        </div>
-      </Router>
-    );
+    if (this.state.todos.length !== 0) {
+      return (
+        <Router>
+          <div className="container">
+            <Header />
+            <br />
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <React.Fragment>
+                  <AddTodo addItem={this.addItem} />
+                  <br />
+                  <Todos
+                    todos={this.state.todos}
+                    toggleComplete={this.toggleComplete}
+                    deleteItem={this.deleteItem}
+                  />
+                </React.Fragment>
+              )}
+            />
+            <Route path="/about" component={About} />
+          </div>
+        </Router>
+      );
+    } else {
+      return (
+        <Router>
+          <div className="container">
+            <Header />
+            <br />
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <React.Fragment>
+                  <AddTodo addItem={this.addItem} />
+                  <br />
+                  <div className="spinner-border"></div>
+                  <Todos
+                    todos={this.state.todos}
+                    toggleComplete={this.toggleComplete}
+                    deleteItem={this.deleteItem}
+                  />
+                </React.Fragment>
+              )}
+            />
+            <Route path="/about" component={About} />
+          </div>
+        </Router>
+      );
+    }
   }
 }
 

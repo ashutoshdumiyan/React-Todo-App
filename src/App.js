@@ -63,6 +63,7 @@ class App extends Component {
   };
 
   render() {
+    // this "if" condition is for show/hide the loading spinner
     if (this.state.todos.length !== 0) {
       return (
         <Router>

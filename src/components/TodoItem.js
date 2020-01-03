@@ -17,6 +17,7 @@ export class TodoItem extends Component {
     return {
       display: "flex",
       alignItems: "center",
+      justifyContent: "space-between",
       background: "#f4f4f4",
       padding: "10px",
       borderBottom: "1px solid #777777"
@@ -27,7 +28,7 @@ export class TodoItem extends Component {
     const { id, title } = this.props.todo;
     return (
       <div style={this.getDivStyle()}>
-        <form style={{ flexGrow: 0.9 }}>
+        <form>
           <div className="form-group form-check" style={{ marginBottom: 0 }}>
             <input
               className="form-check-input"
@@ -47,9 +48,8 @@ export class TodoItem extends Component {
         <button
           onClick={this.props.deleteItem.bind(this, id)}
           className="btn btn-primary"
-          style={{ flexGrow: 0.1 }}
         >
-          Delete
+          <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;Delete
         </button>
       </div>
     );

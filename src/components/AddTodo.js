@@ -37,11 +37,9 @@ export class AddTodo extends Component {
               />
               &nbsp;&nbsp;
               <span className="input-group-btn">
-                <input
-                  type="submit"
-                  value="Submit"
-                  className="btn btn-primary"
-                />
+                <button type="submit" className="btn btn-primary">
+                  <i class="fas fa-paper-plane"></i>&nbsp;&nbsp;Submit
+                </button>
               </span>
             </div>
           </form>
